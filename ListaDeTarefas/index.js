@@ -32,10 +32,43 @@ function criaTarefa(textoInput){
     li.innerText = textoInput;
     tarefas.appendChild(li);
     limpaInput();
-    criaBtnApagar(li)
+    criaBtnApagar(li);
+    salvarTarefas();
 }
 
 btnAddTarefa.addEventListener('click', function(){ //function(e) anônima
     if(!inputTarefa.value) return;
     criaTarefa(inputTarefa.value);
 });
+
+document.addEventListener('click', function(e){
+    const el = e.target;
+
+    if (el.classList.contains('apagar')){
+        el.parentElement.remove();
+        salvarTarefas();
+    }
+});
+
+function salvarTarefas(){
+    const liTarefas = tarefas.querySelectorAll('li');
+    const listaDeTarefas = [];
+    for (let tarefa of liTarefas){
+        var tarefaTexto = tarefa.innerText;
+        tarefaTexto = tarefaTexto.replace('Apagar', '').trim(); // apenas para remover o texto "APAGAR";
+        listaDeTarefas.push(tarefaTexto);
+    }
+
+    const tarefasJSON = JSON.stringify(listaDeTarefas);
+    localStorage.setItem('tarefas', tarefasJSON);
+}
+
+function addTarefasSalvas(){
+    const tarefas = localStorage.getItem('tarefas');
+    const listaDeTarefas = JSON.parse(tarefas);
+
+    for (let tarefa of listaDeTarefas){
+        criaTarefa(tarefa);
+    }
+}
+addTarefasSalvas();
