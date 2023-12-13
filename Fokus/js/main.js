@@ -11,7 +11,7 @@ const imagePausePlay = document.querySelector('#start-pause img');
 
 const starPauseBt = document.querySelector('#start-pause')
 
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 10;
 mostraTempo();
 let intervalo = null;
 
@@ -36,7 +36,7 @@ const buttonActive = document.querySelector('.active');
 const banner = document.querySelector('.app__image');
 
 focoBt.addEventListener('click', ()=> {
-    tempoDecorridoEmSegundos = 1500;
+    tempoDecorridoEmSegundos = 10;
     alterarContexto('foco');
     focoBt.classList.add('active');
     curtoBt.classList.remove('active');
@@ -83,6 +83,11 @@ const contagem = () =>{
     if(tempoDecorridoEmSegundos <= 0){
         beepSong.play();
         alert('Tempo Finalizado');
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if(focoAtivo){
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
         zerar();
         return;
     }
