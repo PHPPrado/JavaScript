@@ -12,6 +12,7 @@ async function getBuscarLivros(){
 }
 
 function exibirLivros(livros){
+    elementoInserirLivros.innerHTML = '';
     livros.forEach(livro => {
         elementoInserirLivros.innerHTML += `
             <div class="livro">
@@ -35,9 +36,12 @@ function aplicarDesconto(livros){
     return livrosComDesconto;
 }
 
-const btnFiltrarFront = document.getElementById('btnFiltrarLivrosFront');
-btnFiltrarFront.addEventListener('click', filtrarFront())
+const botoes = document.querySelectorAll('.btn');
+botoes.forEach(btn => btn.addEventListener('click', filtrarLivros))
 
-function filtrarFront(){
-    let livrosFiltrados = livros.filter(livro => livro.categoria == 'front-end')
+function filtrarLivros(){
+    const elementoBtn = document.getElementById(this.id);
+    const categoria = elementoBtn.value;
+    let livrosFiltrados = livros.filter(livro => livro.categoria == categoria);
+    exibirLivros(livrosFiltrados)
 }
